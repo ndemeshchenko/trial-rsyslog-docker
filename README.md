@@ -1,0 +1,1 @@
+# trial-rsyslog-docker
