@@ -1,0 +1,38 @@
+version: '2'
+services:
+  rsyslog_agent:
+    build: 'rsyslog-agent/'
+    ports:
+      - "514/tcp:514/tcp"
+    expose:
+      - "514/tcp"
+    environment:
+      - RSYSLOG_SERV_HOST=rsyslog_server:515
+    networks:
+      - trial-net
+  rsyslog_server:
+    build: 'rsyslog-server/'
+    ports:
+      - "515/tcp:515/tcp"
+    expose:
+      - "515/tcp"
+    networks:
+      - trial-net
+  app:
+    image: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:514"
+        syslog-facility: daemon
+        tag: nginx
+    networks:
+      - trial-net
+    depends_on:
+      - rsyslog_agent
+networks:
+  trial-net:
+    external: true
