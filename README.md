@@ -9,4 +9,7 @@ Notes:
 
 - App(nginx) log as a default and best practice streamed to STDOUT
 
-- Rsyslog backend can be configured thru ENV variable passed to docker container
+- Log streamed through fluentd logdriver to fluentd receiver and stored on /fluentd/log/nginx.log
+  . Sure, it can write on data volume or whatever option is required
+
+- Fluentd config can be modified in different ways, like to add usage of 'forest' plugin to store logs from different container to path like /fluentd/logs/nginx_$CONTAINER_ID/nginx.log
